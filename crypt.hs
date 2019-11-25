@@ -13,13 +13,7 @@ rotNdecoder n c = toEnum rotation
     halfN    = n `div` 2
     offset   = if even n then fromEnum c + halfN else fromEnum c + halfN + 1
     rotation = offset `mod` n
-{-
-rotNdecoder n c = toEnum rotation
-  where
-    halfN = n `div` 2
-    rotation =
-        (if even n then fromEnum c + halfN else fromEnum c + halfN + 1) `mod` n
--}
+
 largestCharNumber :: Int
 largestCharNumber = fromEnum (maxBound :: Char)
 
