@@ -94,3 +94,15 @@ class Monoid a where
  mconcat :: [a] -> a
 ```
 
+
+## 二分探索木(binary_index_tree.hs)
+
+大学の課題で二分探索木を作る必要があるので用意しました. 
+
+### データ型
+Tree a型: 自分自身の値a, left child, right childを持つ. or Empty(つまり, 子要素を何も持たない)
+
+現在, Emptyが等しいかさえわかればいいので, Eqについてのinstanceを作成.
+
+### 関数群
+コメントを参照

@@ -1,6 +1,9 @@
 import           Data.List
 import           Data.Semigroup
 
+myAny :: (a -> Bool) -> [a] -> Bool
+myAny testfunc = (foldr (||) False) . (map testfunc)
+
 myLast :: [a] -> a
 myLast = head . reverse
 
