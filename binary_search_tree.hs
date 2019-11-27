@@ -4,8 +4,8 @@ import           Control.Applicative
 -- ツリー型(要素がa)
 data Tree a = Empty | Node a (Tree a) (Tree a) deriving (Show)
 instance Eq (Tree a) where
- (==) Empty Empty = True
- (==) _ _ = False
+    (==) Empty Empty = True
+    (==) _     _     = False
 
 -- | 要素がTreeに含まれるか探索
 treeElem :: (Ord a) => a -> Tree a -> Bool
@@ -39,7 +39,8 @@ heightSum depth (Node a left right)
     = (heightSum (depth + 1) left) + (heightSum (depth + 1) right) + depth
 
 -- | 木の要素の個数を求める
-countNum ::  Tree a -> Int
+countNum :: Tree a -> Int
+countNum Empty = 0
 countNum (Node a left right)
     | left == Empty && right == Empty = 1
     | left == Empty                   = (countNum right) + 1
@@ -47,6 +48,16 @@ countNum (Node a left right)
     | otherwise                       = (countNum left) + (countNum right) + 1
 
 -- | 木の高さの平均を求める
-heightAverage ::  (Integral a, Fractional b) => a -> a -> b
-heightAverage heightsum n = (fromIntegral heightsum) / (fromIntegral n)
+heightAverage :: (Fractional p) => Tree a -> p
+heightAverage Empty = 0
+heightAverage tree =
+    (fromIntegral (heightSum 0 tree)) / (fromIntegral (countNum tree))
 
+-- 例
+-- tree = foldl insert Empty [5,3,7,1,9]
+{-
+ -        5
+ -       3 7
+ -      1   9  
+ -  みたいな木ができる
+ -}
