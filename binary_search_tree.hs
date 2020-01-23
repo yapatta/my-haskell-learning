@@ -40,6 +40,35 @@ insert (Node a left right) x | x == a    = Node a left right
                              | x < a     = Node a (insert left x) right
                              | otherwise = Node a left (insert right x)
 
+-- | Treeからxを削除する
+delete :: Tree a -> Int -> Tree a
+delete Empty x = Empty
+delete (Node a left right) x
+    | x == a = if (left == Empty && right == Empty)
+        then Empty
+        else if left == Empty
+            then right
+            else if right == Empty then left else delete2 (Node a left right)
+    | x < a = Node a (delete left x) right
+    | otherwise = Node a left (delete right x)
+
+-- | 子が２つのときの削除
+-- 左の子の最大値を親とした木を返す
+delete2 :: Tree a -> Tree a
+delete2 (Node a left right) =
+    Node (getMaxChild left) (deleteMaxChild left) right
+
+-- | 子の最大値をとる
+getMaxChild :: Tree a -> Int
+getMaxChild (Node a _    Empty) = a
+getMaxChild (Node a left right) = getMaxChild right
+
+-- | 最大の子を消した木を返す
+deleteMaxChild :: Tree a -> Tree a
+deleteMaxChild (Node a Empty Empty) = Empty
+deleteMaxChild (Node a left  Empty) = left
+deleteMaxChild (Node a left  right) = Node a left (deleteMaxChild right)
+
 -- ここは間違って作ってしまったコーナー --
 {--
 -- | 木の高さの合計を求める
@@ -123,13 +152,27 @@ avlTrees a = filter isAVL (uniqueBST a)
 -- 実行例 --
 
 -- 二分探索木作成の例
--- tree = foldl insert Empty [5,3,7,1,9]
+-- tree = foldl insert Empty [5,3,4,7,1,9]
 {--
  -        5
- -       3 7
- -      1   9  
+ -       3  7
+ -      1 4  9  
  -  みたいな木ができる
 --}
+-- 二分探索木の削除
+-- 削除前
+-- Node 5 (Node 3 (Node 1 Empty Empty) (Node 4 Empty Empty)) (Node 7 Empty (Node 9 Empty Empty))
+--
+-- 削除
+-- delete tree 3
+-- Node 5 (Node 1 Empty (Node 4 Empty Empty)) (Node 7 Empty (Node 9 Empty Empty))
+{--
+ -        5
+ -       1  7
+ -        4  9  
+ -  みたいな木ができる
+--}
+
 
 -- 課題1 --
 -- 1..nまでの自然数から出来る順列をすべて発生
